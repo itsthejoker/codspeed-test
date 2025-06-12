@@ -39,19 +39,19 @@ def test_asbestos_cursor_returned_with_patch():
 
 
 @pytest.mark.benchmark
-def test_example_sql_query():
+def test_example_sql_query(benchmark):
     """Test that the example SQL query returns a valid result. This test will
     fail with codspeed enabled, because the test query with Asbestos will
     be registered twice. The query will be cleared by an AutoUse fixture
     in conftest.py after the test."""
     with patch("main.settings", test_settings):
         asbestos_config.register(TEST_QUERY, TEST_RESPONSE)
-        result = main(TEST_QUERY)
+        result = benchmark(main, TEST_QUERY)
         assert result == TEST_RESPONSE
 
 
 @pytest.mark.benchmark
-def test_demonstrate_that_clear_fixture_is_working():
+def test_demonstrate_that_clear_fixture_is_working(benchmark):
     with patch("main.settings", test_settings):
-        result = main(TEST_QUERY)
+        result = benchmark(main, TEST_QUERY)
         assert result == []
